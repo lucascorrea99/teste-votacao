@@ -1,0 +1,55 @@
+/* styles.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #fffdfd;
+}
+
+h1, h2, #vote-percentages {
+  background-color: rgb(160, 54, 221); /* Adiciona um fundo roxo */
+  color: white; /* Altera a cor do texto para branco */
+  text-align: center;
+  padding: 10px 0; /* Adiciona algum espaço ao redor do texto */
+  font-weight: bold; /* Torna o texto mais grosso */
+  text-transform: uppercase; /* Torna o texto maiúsculo */
+}
+
+.participants-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 50px;
+}
+
+.participant {
+  text-align: center;
+}
+
+button {
+  display: block;
+  width: 200px;
+  height: 50px;
+  margin: 20px auto;
+  background-color: rgb(160, 54, 221);
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: rgb(103, 34, 143);
+}
+
+.participant img {
+  width: 400px;  /* Altere para o valor desejado */
+  height: 400px; /* Altere para o valor desejado */
+  object-fit: cover; /* Isso garante que a imagem cubra a área total, possivelmente cortando a imagem */
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

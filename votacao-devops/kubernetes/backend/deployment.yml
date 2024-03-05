@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: votacao-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: votacao-backend
+  template:
+    metadata:
+      labels:
+        app: votacao-backend
+    spec:
+      containers:
+      - name: votacao-backend
+        image: my-flask-app
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - secretRef:
+            name: votacao-secrets
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: votacao-backend
+spec:
+  selector:
+    app: votacao-backend
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000

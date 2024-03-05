@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Verification</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <script src="/js/config.js"></script> <!-- Load the config file first -->
+    <script>
+        // Now you can use the site key from the config file
+        var siteKey = config.RECAPTCHA_SITE_KEY;
+    </script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+      function submitForm(event) {
+          event.preventDefault();
+  
+          // Check the reCAPTCHA
+          var recaptcha = grecaptcha.getResponse();
+          if (recaptcha == "") {
+              alert("Please verify the reCAPTCHA.");
+              return;
+          }
+  
+          // If the reCAPTCHA is verified, redirect to the voting page
+          window.location.href = "/votacao.html";
+      }
+
+      // Render the reCAPTCHA after the page has loaded
+      window.onload = function() {
+          grecaptcha.render(document.querySelector('.g-recaptcha'), { 'sitekey' : siteKey });
+      }
+  </script>
+</head>
+<body>
+  <h1>Por favor, verifique que você não é um bot</h1>
+  <form onsubmit="submitForm(event)">
+    <div class="center"> 
+      <div class="g-recaptcha"></div> <!-- Remove the data-sitekey attribute -->
+      <br/>
+      <input type="submit" value="Submit">
+    </div>  
+  </form>
+</body>
+</html>
