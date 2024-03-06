@@ -20,7 +20,7 @@ def vote():
 
     if participant in votes:
         votes[participant] += 1
-        return jsonify({'participant': participant, 'redirect': 'http://localhost:30020/confirmation.html'})
+        return jsonify({'participant': participant, 'redirect': 'http://dev.votacao.example/confirmation.html'})
     else:
         return jsonify({'message': 'Invalid participant'}), 400
 
