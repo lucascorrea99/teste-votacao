@@ -18,7 +18,7 @@
         });
 
         // Fetch vote percentages when the page is loaded
-        fetch('http://localhost:5000/votePercentages')
+        fetch('http://localhost:30000/votePercentages')
             .then(response => response.json())
             .then(data => {
                 let percentages = data;

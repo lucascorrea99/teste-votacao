@@ -1,5 +1,5 @@
 function updateVotes() {
-    fetch('http://localhost:5000/admin/votes')
+    fetch('http://localhost:30000/admin/votes')
         .then(response => response.json())
         .then(data => {
             const participantsDiv = document.getElementById('participants');

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: votacao-backend
-        image: my-flask-app
+        image: lucascorrea99/votacao-backend
         ports:
         - containerPort: 5000
         envFrom:
@@ -26,9 +26,11 @@ kind: Service
 metadata:
   name: votacao-backend
 spec:
+  type: NodePort
   selector:
     app: votacao-backend
   ports:
     - protocol: TCP
       port: 5000
       targetPort: 5000
+      nodePort: 30000
