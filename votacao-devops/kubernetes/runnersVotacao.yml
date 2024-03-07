@@ -1,0 +1,10 @@
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: RunnerDeployment
+metadata:
+  name: votacao-runners-actions
+  namespace: github-actions
+spec:
+  replicas: 2
+  template:
+    spec:
+      repository: lucascorrea99/teste-votacao
