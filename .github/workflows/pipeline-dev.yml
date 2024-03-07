@@ -47,3 +47,5 @@ jobs:
       run: helm repo update
     - name: helm deploy frontend dev
       run: helm upgrade votacao-frontend votacao-charts/votacao-frontend -n dev --set image.tag=dev$GITHUB_SHA || helm install votacao-frontend votacao-charts/votacao-frontend -n dev --set image.tag=dev$GITHUB_SHA
+    - name: helm deploy backend dev
+      run: helm upgrade votacao-backend votacao-charts/votacao-backend -n dev --set image.tag=dev$GITHUB_SHA || helm install votacao-backend votacao-charts/votacao-backend -n dev --set image.tag=dev$GITHUB_SHA
