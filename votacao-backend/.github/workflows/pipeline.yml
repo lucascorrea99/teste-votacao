@@ -1,5 +1,5 @@
 ---
-name: Votacao CI/CD
+name: Gataria CI/CD Dev
 on:
   push:
     branches:
