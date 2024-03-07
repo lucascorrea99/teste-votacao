@@ -1,0 +1,63 @@
+- name: monta imagem backend
+  run: cd votacao-backend && docker build --build-arg ENV=dev -t lucascorrea99/votacao-backend:dev$GITHUB_SHA .
+
+- name: monta imagem frontend
+  run: cd votacao-frontend && docker build --build-arg ENV=dev -t lucascorrea99/votacao-frontend:dev$GITHUB_SHA .
+
+
+
+
+ # Use the ARG instruction to define build-time environment variables
+ARG ENV
+
+# Use the ENV instruction to set the environment variable in the image
+ENV ENV=$ENV
+
+# Rest of your Dockerfile...
+
+
+ docker build --build-arg ENV=prod -t votacao-frontest .
+
+ # alt api dev prod
+
+
+@app.route('/vote', methods=['POST'])
+def vote():
+    data = request.get_json()
+    if not data:
+        return jsonify({'message': 'Bad Request'}), 400
+
+    participant = data.get('participant')
+
+    if participant in votes:
+        votes[participant] += 1
+        env = os.getenv('ENV', 'dev')
+        base_url = 'http://dev.votacao.example' if env == 'dev' else 'http://votacao.example'
+        return jsonify({'participant': participant, 'redirect': f'{base_url}/confirmation.html'})
+    else:
+        return jsonify({'message': 'Invalid participant'}), 400
+
+
+# Use an official Nginx runtime as a parent image
+FROM nginx:alpine
+
+# Use the ARG instruction to define build-time environment variables
+ARG ENV
+
+# Use the ENV instruction to set the environment variable in the image
+ENV ENV=$ENV
+
+# Copy the current directory contents into the container at /usr/share/nginx/html
+COPY . /usr/share/nginx/html 
+
+# Replace the URL in the HTML file
+RUN if [ "$ENV" = "prod" ] ; then sed -i 's|http://dev.votacao.example|http://votacao.example|g' /usr/share/nginx/html/confirmation.html ; else sed -i 's|http://dev.votacao.example|http://dev.votacao.example|g' /usr/share/nginx/html/confirmation.html ; fi
+
+# Replace the URL in the script.js file
+RUN if [ "$ENV" = "prod" ] ; then sed -i 's|http://dev.votacao.example|http://votacao.example|g' /usr/share/nginx/html/js/script.js ; else sed -i 's|http://dev.votacao.example|http://dev.votacao.example|g' /usr/share/nginx/html/js/script.js ; fi
+
+# Replace the URL in the confirmation.js file
+RUN if [ "$ENV" = "prod" ] ; then sed -i 's|http://dev.votacao.example|http://votacao.example|g' /usr/share/nginx/html/js/confirmation.js ; else sed -i 's|http://dev.votacao.example|http://dev.votacao.example|g' /usr/share/nginx/html/js/confirmation.js ; fi
+
+# Replace the URL in the admin.js file
+RUN if [ "$ENV" = "prod" ] ; then sed -i 's|http://dev.votacao.example|http://votacao.example|g' /usr/share/nginx/html/js/admin.js ; else sed -i 's|http://dev.votacao.example|http://dev.votacao.example|g' /usr/share/nginx/html/js/admin.js ; fi
