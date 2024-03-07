@@ -14,8 +14,18 @@ jobs:
       uses: actions/checkout@v3
     - name: Docker login
       run: docker login -u ${{ vars.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASS }}
-    - name: run command
-      run: ls
+    - name: acessar backend
+      run: cd /votacao-backend
+    - name: monta imagem backend
+      run: docker build -t lucascorrea99/votacao-backend:dev$GITHUB_SHA .
+    - name: push imagem backend
+      run: docker push lucascorrea99/votacao-backend:dev$GITHUB_SHA
+    - name: acessar frontend  
+      run: cd ../votacao-frontend
+    - name: monta imagem frontend
+      run: docker build -t lucascorrea99/votacao-frontend:dev$GITHUB_SHA .
+    - name: push imagem frontend
+      run: docker push lucascorrea99/votacao-frontend:dev$GITHUB_SHA
   test-dev:
     name: Test dev
     if: contains (github.ref, 'dev')
