@@ -15,7 +15,7 @@ jobs:
     - name: Docker login
       run: docker login -u ${{ vars.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASS }}
     - name: run command
-      run: docker ps
+      run: ls
   test-dev:
     name: Test dev
     if: contains (github.ref, 'dev')
