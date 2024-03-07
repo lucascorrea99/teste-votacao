@@ -1,5 +1,5 @@
 ---
-name: Votacao CI/CD Dev
+name: Votacao CI/CD
 on:
   push:
     branches:
