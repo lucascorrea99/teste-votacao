@@ -3,7 +3,7 @@ from flask_cors import CORS
 import requests, os
 
 app = Flask(__name__)
-CORS(app) # Enable CORS (Cross-Origin Resource Sharing
+CORS(app)
 
 votes = {
     'Participant 1': 0,
