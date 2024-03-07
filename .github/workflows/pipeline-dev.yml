@@ -15,7 +15,7 @@ jobs:
     - name: Docker login
       run: docker login -u ${{ vars.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASS }}
     - name: acessar backend
-      run: cd /votacao-backend
+      run: cd votacao-backend
     - name: monta imagem backend
       run: docker build -t lucascorrea99/votacao-backend:dev$GITHUB_SHA .
     - name: push imagem backend
