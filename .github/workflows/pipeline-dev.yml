@@ -1,10 +1,9 @@
 ---
-name: Gataria CI/CD Dev
+name: votacao-ci/cd-dev
 on:
   push:
     branches:
       - dev
-
 jobs:
   build-dev:
     name: Build dev
@@ -13,8 +12,8 @@ jobs:
     steps:
     - name: Clone repository
       uses: actions/checkout@v3
-    - name: Step 2
-      run: ls
+    - name: Docker login
+      run: docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASS }}
     - name: run command
       run: docker ps
   test-dev:
