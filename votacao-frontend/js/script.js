@@ -8,7 +8,7 @@ document.getElementById('vote2').addEventListener('click', function() {
 });
 
 function vote(participant) {
-    fetch('http://localhost:30000/vote', {
+    fetch('http://dev.votacao.example/vote', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
