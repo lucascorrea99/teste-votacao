@@ -28,7 +28,7 @@ jobs:
     needs: build-dev
     steps:
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v2 #teste
       with:
         python-version: 3.8
     - name: Install dependencies
