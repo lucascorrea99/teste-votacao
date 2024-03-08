@@ -1,5 +1,5 @@
 ---
-name: votacao-ci/cd-prod
+name: votacao-cicd-prod
 on:
   release:
     branches: main
