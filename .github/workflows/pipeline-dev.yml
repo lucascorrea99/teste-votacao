@@ -1,5 +1,5 @@
 ---
-name: votacao-ci/cd-dev
+name: votacao-cicd-dev
 on:
   push:
     branches:
