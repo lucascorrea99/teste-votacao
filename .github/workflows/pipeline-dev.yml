@@ -31,6 +31,8 @@ jobs:
       uses: actions/setup-python@v2 #teste
       with:
         python-version: 3.8
+    - name: Clone repository
+      run: ls
     - name: Install dependencies
       run: pip install -r votacao-backend/requirements.txt
     - name: Run tests
