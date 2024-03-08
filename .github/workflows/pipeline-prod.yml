@@ -1,13 +1,13 @@
 ---
 name: votacao-ci/cd-prod
 on:
-  push:
-    branches:
-      - main
+  release:
+    branches: main
+    types: [published]
+  
 jobs:
   build-prod:
     name: Build prod
-    if: contains (github.ref, 'main')
     runs-on: self-hosted
     steps:
     - name: Clone repository
@@ -24,7 +24,6 @@ jobs:
       run: docker push lucascorrea99/votacao-frontend:prod$GITHUB_SHA
   test-prod:
     name: Test prod
-    if: contains (github.ref, 'main')
     runs-on: self-hosted
     needs: build-prod
     steps:
@@ -32,7 +31,6 @@ jobs:
       run: env
   deploy-prod:
     name: Deploy prod
-    if: contains (github.ref, 'main')
     runs-on: self-hosted
     needs: test-prod
     container:
