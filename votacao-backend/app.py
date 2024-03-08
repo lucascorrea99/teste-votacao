@@ -11,21 +11,17 @@ import requests, os
 app = Flask(__name__)
 CORS(app)
 
-# Set the tracer provider
 trace.set_tracer_provider(TracerProvider(resource=Resource.create({"service.name": "votacao-backend"})))
 
-# Create an OTLP exporter
 otlp_exporter = OTLPSpanExporter(
-    endpoint="localhost:31734",  # replace with your node IP and the NodePort for OTLP
+    endpoint="10.0.2.15:31734",
     insecure=True,
 )
 
-# Add the exporter to the tracer provider
 trace.get_tracer_provider().add_span_processor(
     BatchSpanProcessor(otlp_exporter)
 )
 
-# Now you can instrument your Flask app
 FlaskInstrumentor().instrument_app(app)
 
 votes = {
@@ -33,6 +29,7 @@ votes = {
     'Participant 2': 0,
 }
 
+# Rota para votação. Recebe um POST com o participante e incrementa o voto.
 @app.route('/vote', methods=['POST'])
 def vote():
     data = request.get_json()
@@ -47,6 +44,7 @@ def vote():
     else:
         return jsonify({'message': 'Invalid participant'}), 400
 
+# Rota para validar o captcha. Recebe um POST com a resposta do captcha e valida.
 @app.route('/validateCaptcha', methods=['POST'])
 def validate_captcha():
     data = request.get_json()
@@ -60,11 +58,13 @@ def validate_captcha():
     else:
         return jsonify({'message': 'Valid reCAPTCHA'}), 200
 
+# Rota para obter a porcentagem de votos. Retorna um GET com a porcentagem de votos para cada participante.
 @app.route('/votePercentages', methods=['GET'])
 def vote_percentages():
     total_votes = sum(votes.values())
     return jsonify({participant: (vote_count / total_votes) * 100 for participant, vote_count in votes.items()})
 
+# Rota para obter a contagem de votos. Retorna um GET com a contagem de votos para cada participante.
 @app.route('/admin/votes', methods=['GET'])
 def admin_votes():
     return jsonify(votes)

@@ -24,7 +24,6 @@ jobs:
       run: docker push lucascorrea99/votacao-frontend:dev$GITHUB_SHA
   test-dev:
     name: Test dev
-    if: contains (github.ref, 'dev')
     runs-on: self-hosted
     needs: build-dev
     steps:
