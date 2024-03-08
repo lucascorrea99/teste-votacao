@@ -16,7 +16,7 @@ trace.set_tracer_provider(TracerProvider(resource=Resource.create({"service.name
 
 # Create an OTLP exporter
 otlp_exporter = OTLPSpanExporter(
-    endpoint="signoz-otel-collector:4317",  # replace with your node IP and the NodePort for OTLP
+    endpoint="10.0.2.15:31734",  # replace with your node IP and the NodePort for OTLP
     insecure=True,
 )
 
