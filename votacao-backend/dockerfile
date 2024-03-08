@@ -1,6 +1,12 @@
 # Use an official Python runtime as a parent image
 FROM python:3.8-slim-buster
 
+# Use the ARG instruction to define build-time environment variables
+ARG ENV
+
+# Use the ENV instruction to set the environment variable in the image
+ENV ENV=$ENV
+
 # Set the working directory in the container to /app
 WORKDIR /app
 
@@ -9,6 +15,8 @@ ADD . /app
 
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
+
+RUN if [ "$ENV" = "prod" ] ; then sed -i 's|http://dev.votacao.example|http://votacao.example|g' app.py ; fi
 
 # Make port 5000 available to the world outside this container
 EXPOSE 5000
