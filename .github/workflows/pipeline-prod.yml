@@ -15,11 +15,11 @@ jobs:
     - name: Docker login
       run: docker login -u ${{ vars.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASS }}
     - name: monta imagem backend
-      run: cd votacao-backend && docker build --build-arg ENV=prod -t lucascorrea99/votacao-backend:prod$GITHUB_SHA .
+      run: cd votacao-backend && docker build --build-arg ENV=prod -t lucascorrea99/votacao-backend:${GITHUB_REF##*/} .
     - name: push imagem backend
       run: docker push lucascorrea99/votacao-backend:${GITHUB_REF##*/}
     - name: monta imagem frontend
-      run: cd votacao-frontend && docker build --build-arg ENV=prod -t lucascorrea99/votacao-frontend:prod$GITHUB_SHA .
+      run: cd votacao-frontend && docker build --build-arg ENV=prod -t lucascorrea99/votacao-frontend:${GITHUB_REF##*/} .
     - name: push imagem frontend
       run: docker push lucascorrea99/votacao-frontend:${GITHUB_REF##*/}
   test-prod:
