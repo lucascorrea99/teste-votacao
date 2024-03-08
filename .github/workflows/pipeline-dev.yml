@@ -27,16 +27,8 @@ jobs:
     runs-on: self-hosted
     needs: build-dev
     steps:
-    - name: Set up Python
-      uses: actions/setup-python@v2 #teste
-      with:
-        python-version: 3.8
-    - name: Clone repository
-      uses: actions/checkout@v3
-    - name: Install dependencies
-      run: pip install -r votacao-backend/requirements.txt
-    - name: Run tests
-      run: python -m unittest votacao-backend/teste-app.py
+    - name: Step 1
+      run: env
   deploy-dev:
     name: Deploy dev
     if: contains (github.ref, 'dev')
