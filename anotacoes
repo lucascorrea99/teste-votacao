@@ -38,6 +38,29 @@ def vote():
         return jsonify({'message': 'Invalid participant'}), 400
 
 
+
+import requests
+
+# Start your Flask app
+# ...
+
+# Send a GET request to the /votePercentages endpoint
+response = requests.get('http://localhost:5000/votePercentages')
+print(response.json())
+
+# Send a GET request to the /admin/votes endpoint
+response = requests.get('http://localhost:5000/admin/votes')
+print(response.json())
+
+# Send a POST request to the /vote endpoint
+response = requests.post('http://localhost:5000/vote', json={'participant': 'Participant 1'})
+print(response.json())
+
+# Send a POST request to the /validateCaptcha endpoint
+response = requests.post('http://localhost:5000/validateCaptcha', json={'captcha': 'test-captcha'})
+print(response.json())
+
+
 # Use an official Nginx runtime as a parent image
 FROM nginx:alpine
 

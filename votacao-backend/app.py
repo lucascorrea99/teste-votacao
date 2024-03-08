@@ -1,9 +1,32 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry import trace
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.sdk.resources import Resource
 import requests, os
 
 app = Flask(__name__)
 CORS(app)
+
+# Set the tracer provider
+trace.set_tracer_provider(TracerProvider(resource=Resource.create({"service.name": "votacao-backend"})))
+
+# Create an OTLP exporter
+otlp_exporter = OTLPSpanExporter(
+    endpoint="localhost:31734",  # replace with your node IP and the NodePort for OTLP
+    insecure=True,
+)
+
+# Add the exporter to the tracer provider
+trace.get_tracer_provider().add_span_processor(
+    BatchSpanProcessor(otlp_exporter)
+)
+
+# Now you can instrument your Flask app
+FlaskInstrumentor().instrument_app(app)
 
 votes = {
     'Participant 1': 0,
