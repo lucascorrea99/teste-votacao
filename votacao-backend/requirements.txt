@@ -1,3 +1,6 @@
 flask
-flask_cors
+flask-cors
+opentelemetry-instrumentation-flask
+opentelemetry-exporter-otlp-proto-grpc
+opentelemetry-sdk
 requests
