@@ -4,6 +4,9 @@ function updateVotes() {
         .then(data => {
             const participantsDiv = document.getElementById('participants');
             participantsDiv.innerHTML = '';  // Limpa os participantes existentes
+
+            let totalVotes = 0;
+
             for (const participant in data) {
                 // Cria um novo elemento div para o participante
                 const participantDiv = document.createElement('div');
@@ -23,7 +26,13 @@ function updateVotes() {
 
                 // Adiciona o div do participante ao div dos participantes
                 participantsDiv.appendChild(participantDiv);
+
+                totalVotes += data[participant];
             }
+
+            // Atualiza o total de votos e os votos por hora
+            document.getElementById('total-votes').textContent = totalVotes;
+            document.getElementById('votes-per-hour').textContent = totalVotes / 24; // assumindo que os dados representam um dia inteiro
         });
 }
 
