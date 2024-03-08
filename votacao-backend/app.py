@@ -20,9 +20,12 @@ def vote():
 
     if participant in votes:
         votes[participant] += 1
-        return jsonify({'participant': participant, 'redirect': 'http://dev.votacao.example/confirmation.html'})
+        env = os.getenv('ENV', 'dev')
+        base_url = 'http://dev.votacao.example' if env == 'dev' else 'http://votacao.example'
+        return jsonify({'participant': participant, 'redirect': f'{base_url}/confirmation.html'})
     else:
         return jsonify({'message': 'Invalid participant'}), 400
+
 
 @app.route('/validateCaptcha', methods=['POST'])
 def validate_captcha():

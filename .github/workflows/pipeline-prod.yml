@@ -3,7 +3,7 @@ name: votacao-ci/cd-prod
 on:
   push:
     branches:
-      - 
+      - main
 jobs:
   build-prod:
     name: Build prod
@@ -15,11 +15,11 @@ jobs:
     - name: Docker login
       run: docker login -u ${{ vars.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASS }}
     - name: monta imagem backend
-      run: cd votacao-backend && docker build -t lucascorrea99/votacao-backend:prod$GITHUB_SHA .
+      run: cd votacao-backend && docker build --build-arg ENV=prod -t lucascorrea99/votacao-backend:prod$GITHUB_SHA .
     - name: push imagem backend
       run: docker push lucascorrea99/votacao-backend:prod$GITHUB_SHA
     - name: monta imagem frontend
-      run: cd votacao-frontend && docker build -t lucascorrea99/votacao-frontend:prod$GITHUB_SHA .
+      run: cd votacao-frontend && docker build --build-arg ENV=prod -t lucascorrea99/votacao-frontend:prod$GITHUB_SHA .
     - name: push imagem frontend
       run: docker push lucascorrea99/votacao-frontend:prod$GITHUB_SHA
   test-prod:
@@ -46,6 +46,6 @@ jobs:
     - name: helm update repo
       run: helm repo update
     - name: helm deploy frontend prod
-      run: helm upgrade votacao-frontend votacao-charts/votacao-frontend -n prod --set "image.tag=prod$GITHUB_SHA" --set "ingress.hosts[0].host=votacao.example" --set "ingress.hosts[0].paths[0].path=/" --set "ingress.hosts[0].paths[0].pathType=Prefix" --set "autoscaling.enabled=true" || helm install votacao-frontend votacao-charts/votacao-frontend -n prod --set "image.tag=prod$GITHUB_SHA" --set "ingress.hosts[0].host=votacao.example" --set "ingress.hosts[0].paths[0].path=/" --set "ingress.hosts[0].paths[0].pathType=Prefix" --set "autoscaling.enabled=true"
+      run: helm upgrade votacao-frontend votacao-charts/votacao-frontend -n prod --set "image.tag=prod$GITHUB_SHA" --set "ingress.hosts[0].host=votacao.example" --set "ingress.hosts[0].paths[0].path=/" --set "ingress.hosts[0].paths[0].pathType=Prefix" || helm install votacao-frontend votacao-charts/votacao-frontend -n prod --set "image.tag=prod$GITHUB_SHA" --set "ingress.hosts[0].host=votacao.example" --set "ingress.hosts[0].paths[0].path=/" --set "ingress.hosts[0].paths[0].pathType=Prefix"
     - name: helm deploy backend prod
-      run: helm upgrade votacao-backend votacao-charts/votacao-backend -n prod --set "image.tag=prod$GITHUB_SHA" --set "ingress.hosts[0].host=votacao.example" --set "ingress.hosts[0].paths[0].path=/" --set "ingress.hosts[0].paths[0].pathType=Prefix" --set "autoscaling.enabled=true" || helm install votacao-backend votacao-charts/votacao-backend -n prod --set "image.tag=prod$GITHUB_SHA" --set "ingress.hosts[0].host=votacao.example" --set "ingress.hosts[0].paths[0].path=/" --set "ingress.hosts[0].paths[0].pathType=Prefix" --set "autoscaling.enabled=true"
+      run: helm upgrade votacao-backend votacao-charts/votacao-backend -n prod --set "image.tag=prod$GITHUB_SHA" --set "ingress.hosts[0].host=votacao.example" --set "ingress.hosts[0].paths[0].path=/" --set "ingress.hosts[0].paths[0].pathType=Prefix" || helm install votacao-backend votacao-charts/votacao-backend -n prod --set "image.tag=prod$GITHUB_SHA" --set "ingress.hosts[0].host=votacao.example" --set "ingress.hosts[0].paths[0].path=/" --set "ingress.hosts[0].paths[0].pathType=Prefix"

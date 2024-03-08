@@ -1,5 +1,23 @@
 # Use an official Nginx runtime as a parent image
 FROM nginx:alpine
 
+# Use the ARG instruction to define build-time environment variables
+ARG ENV
+
+# Use the ENV instruction to set the environment variable in the image
+ENV ENV=$ENV
+
 # Copy the current directory contents into the container at /usr/share/nginx/html
 COPY . /usr/share/nginx/html 
+
+# Replace the URL in the HTML file
+RUN if [ "$ENV" = "prod" ] ; then sed -i 's|http://dev.votacao.example|http://votacao.example|g' /usr/share/nginx/html/confirmation.html ; else sed -i 's|http://dev.votacao.example|http://dev.votacao.example|g' /usr/share/nginx/html/confirmation.html ; fi
+
+# Replace the URL in the script.js file
+RUN if [ "$ENV" = "prod" ] ; then sed -i 's|http://dev.votacao.example|http://votacao.example|g' /usr/share/nginx/html/js/script.js ; else sed -i 's|http://dev.votacao.example|http://dev.votacao.example|g' /usr/share/nginx/html/js/script.js ; fi
+
+# Replace the URL in the confirmation.js file
+RUN if [ "$ENV" = "prod" ] ; then sed -i 's|http://dev.votacao.example|http://votacao.example|g' /usr/share/nginx/html/js/confirmation.js ; else sed -i 's|http://dev.votacao.example|http://dev.votacao.example|g' /usr/share/nginx/html/js/confirmation.js ; fi
+
+# Replace the URL in the admin.js file
+RUN if [ "$ENV" = "prod" ] ; then sed -i 's|http://dev.votacao.example|http://votacao.example|g' /usr/share/nginx/html/js/admin.js ; else sed -i 's|http://dev.votacao.example|http://dev.votacao.example|g' /usr/share/nginx/html/js/admin.js ; fi
