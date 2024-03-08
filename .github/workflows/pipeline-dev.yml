@@ -1,0 +1,51 @@
+---
+name: votacao-cicd-dev
+on:
+  push:
+    branches:
+      - dev
+jobs:
+  build-dev:
+    name: Build dev
+    if: contains (github.ref, 'dev')
+    runs-on: self-hosted
+    steps:
+    - name: Clone repository
+      uses: actions/checkout@v3
+    - name: Docker login
+      run: docker login -u ${{ vars.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASS }}
+    - name: monta imagem backend
+      run: cd votacao-backend && docker build -t lucascorrea99/votacao-backend:dev$GITHUB_SHA .
+    - name: push imagem backend
+      run: docker push lucascorrea99/votacao-backend:dev$GITHUB_SHA
+    - name: monta imagem frontend
+      run: cd votacao-frontend && docker build -t lucascorrea99/votacao-frontend:dev$GITHUB_SHA .
+    - name: push imagem frontend
+      run: docker push lucascorrea99/votacao-frontend:dev$GITHUB_SHA
+  test-dev:
+    name: Test dev
+    if: contains (github.ref, 'dev')
+    runs-on: self-hosted
+    needs: build-dev
+    steps:
+    - name: Step 1
+      run: env
+  deploy-dev:
+    name: Deploy dev
+    if: contains (github.ref, 'dev')
+    runs-on: self-hosted
+    needs: test-dev
+    container:
+      image: lucascorrea99/deploy-votacao:1.0
+      credentials:
+        username: ${{ vars.DOCKER_LOGIN }}
+        password: ${{ secrets.DOCKER_PASS }}
+    steps:
+    - name: add chartmuseum repo
+      run: helm repo add votacao-charts http://chartmuseum:8080
+    - name: helm update repo
+      run: helm repo update
+    - name: helm deploy frontend dev
+      run: helm upgrade votacao-frontend votacao-charts/votacao-frontend -n dev --set image.tag=dev$GITHUB_SHA --set "autoscaling.enabled=false" || helm install votacao-frontend votacao-charts/votacao-frontend -n dev --set image.tag=dev$GITHUB_SHA --set "autoscaling.enabled=false"
+    - name: helm deploy backend dev
+      run: helm upgrade votacao-backend votacao-charts/votacao-backend -n dev --set image.tag=dev$GITHUB_SHA --set "autoscaling.enabled=false" || helm install votacao-backend votacao-charts/votacao-backend -n dev --set image.tag=dev$GITHUB_SHA --set "autoscaling.enabled=false"
