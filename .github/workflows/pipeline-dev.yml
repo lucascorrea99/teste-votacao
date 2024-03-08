@@ -36,7 +36,7 @@ jobs:
     - name: Install dependencies
       run: pip install -r votacao-backend/requirements.txt
     - name: Run tests
-      run: python -m unittest test_app.py
+      run: python -m unittest votacao-backend/teste-app.py
   deploy-dev:
     name: Deploy dev
     if: contains (github.ref, 'dev')
